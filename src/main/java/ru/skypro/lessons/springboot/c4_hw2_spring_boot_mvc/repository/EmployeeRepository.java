@@ -9,5 +9,5 @@ public interface EmployeeRepository {
 
     void addEmployeeList(List<Employee> employeeList);
 
-
+    boolean isEmployeeExist(int num);
 }

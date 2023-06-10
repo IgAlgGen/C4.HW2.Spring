@@ -14,14 +14,6 @@ import java.util.Map;
 public class EmployeeServiceImp implements EmployeeService {
     private final EmployeeRepository employeeRepository;
 
-    private Map<Integer, Employee> getIntEmpMap() {
-        Map<Integer, Employee> intEmpMap = new HashMap<>();
-        for (Employee employee : employeeRepository.getAllEmployees()) {
-            intEmpMap.put(employee.getId(), employee);
-        }
-        return intEmpMap;
-    }
-
     public EmployeeServiceImp(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
     }
@@ -86,7 +78,7 @@ public class EmployeeServiceImp implements EmployeeService {
     @Override
     @SneakyThrows
     public void addEmployee(Employee employee) {
-        if (getIntEmpMap().containsKey(employee.getId())) {
+        if (employeeRepository.isEmployeeExist(employee.getId())) {
             throw new Exception("Неверные данные");
         }
         List<Employee> tempList = new ArrayList<>(List.copyOf(employeeRepository.getAllEmployees()));
@@ -97,7 +89,7 @@ public class EmployeeServiceImp implements EmployeeService {
     @Override
     @SneakyThrows
     public void updateEmployee(int id, Employee employee) {
-        if (!getIntEmpMap().containsKey(id)) {
+        if (!employeeRepository.isEmployeeExist(id)) {
             throw new Exception("Неверные данные");
         }
 
@@ -113,7 +105,7 @@ public class EmployeeServiceImp implements EmployeeService {
     @Override
     @SneakyThrows
     public Employee getEmployeeById(int id) {
-        if (!getIntEmpMap().containsKey(id)) {
+        if (!employeeRepository.isEmployeeExist(id)) {
             throw new Exception("Неверные данные");
         }
         Employee tempEmploye = null;
@@ -128,7 +120,7 @@ public class EmployeeServiceImp implements EmployeeService {
     @Override
     @SneakyThrows
     public void deleteEmployee(int id) {
-        if (!getIntEmpMap().containsKey(id)) {
+        if (!employeeRepository.isEmployeeExist(id)) {
             throw new Exception("Неверные данные");
         }
         List<Employee> tempList = new ArrayList<>(List.copyOf(employeeRepository.getAllEmployees()));
