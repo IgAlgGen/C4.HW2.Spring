@@ -1,36 +1,21 @@
 package ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.pojo;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import jakarta.persistence.*;
+import lombok.*;
 
-@Data
+@Entity
+@Table(name = "employeec4")
+@NoArgsConstructor
 @AllArgsConstructor
+@Data
 public class Employee {
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     private String name;
-    private int salary;
+    private Integer salary;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "position_id")
+    private Position position;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getSalary() {
-        return salary;
-    }
-
-    public void setSalary(int salary) {
-        this.salary = salary;
-    }
 }

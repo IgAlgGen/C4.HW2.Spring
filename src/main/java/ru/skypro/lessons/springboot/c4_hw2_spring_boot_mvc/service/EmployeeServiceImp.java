@@ -1,147 +1,117 @@
 package ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.service;
 
 import lombok.SneakyThrows;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.DTO.EmployeeDTO;
 import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.pojo.Employee;
+import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.DTO.EmployeeFullInfo;
 import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.repository.EmployeeRepository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
+
 
 @Service
 public class EmployeeServiceImp implements EmployeeService {
     private final EmployeeRepository employeeRepository;
 
-    public EmployeeServiceImp(EmployeeRepository employeeRepository) {
+    public EmployeeServiceImp(EmployeeRepository employeeRepository, EmployeeRepository employeeRepository2) {
         this.employeeRepository = employeeRepository;
     }
 
-    @Override
-    public List<Employee> getAllEmployees() {
-        return employeeRepository.getAllEmployees();
-    }
 
     @Override
-    public int getSumSalaryEmployee() {
-        int sumSalary = 0;
-        for (Employee employee : employeeRepository.getAllEmployees()) {
-            sumSalary += employee.getSalary();
+    public List<EmployeeDTO> getAllEmployees() {
+        List<Employee> temp = new ArrayList<>();
+        for (Employee e : employeeRepository.findAll()) {
+            temp.add(e);
         }
-        return sumSalary;
-    }
-
-    @Override
-    public Employee getMinSalaryEmployee() {
-        Employee desiredEmployee = null;
-        int temtInt = Integer.MAX_VALUE;
-        for (Employee employee : employeeRepository.getAllEmployees()) {
-            if (employee.getSalary() < temtInt) {
-                desiredEmployee = employee;
-                temtInt = employee.getSalary();
-            }
-        }
-        return desiredEmployee;
-    }
-
-    @Override
-    public Employee getMaxSalaryEmployee() {
-        Employee desiredEmployee = null;
-        int temtInt = 0;
-        for (Employee employee : employeeRepository.getAllEmployees()) {
-            if (employee.getSalary() > temtInt) {
-                desiredEmployee = employee;
-                temtInt = employee.getSalary();
-            }
-        }
-        return desiredEmployee;
-    }
-
-    @Override
-    public List<Employee> getHigh_salaryEmployee() {
-        List<Employee> high_salaryEmployee = new ArrayList<>();
-        int temp = 0;
-        for (Employee employee : employeeRepository.getAllEmployees()) {
-            temp = temp + employee.getSalary();
-
-        }
-        int average = temp / employeeRepository.getAllEmployees().size();
-        for (Employee employe1 : employeeRepository.getAllEmployees()) {
-            if (employe1.getSalary() > average) {
-                high_salaryEmployee.add(employe1);
-            }
-        }
-        return high_salaryEmployee;
+        return temp.stream()
+                .map(EmployeeDTO::fromEmployee)
+                .collect(Collectors.toList());
     }
 
     @Override
     @SneakyThrows
-    public void addEmployee(Employee employee) {
-        if (employeeRepository.isEmployeeExist(employee.getId())) {
+    public void addEmployee(EmployeeDTO employeeDTO) {
+        if (employeeRepository.existsById(employeeDTO.getId())) {
             throw new Exception("Неверные данные");
         }
-        List<Employee> tempList = new ArrayList<>(List.copyOf(employeeRepository.getAllEmployees()));
-        tempList.add(employee);
-        employeeRepository.addEmployeeList(tempList);
+        employeeRepository.save(employeeDTO.toEmployee());
     }
 
     @Override
     @SneakyThrows
-    public void updateEmployee(int id, Employee employee) {
-        if (!employeeRepository.isEmployeeExist(id)) {
+    public void updateEmployee(int id, EmployeeDTO employeeDTO) {
+        if (!employeeRepository.existsById(id)) {
             throw new Exception("Неверные данные");
         }
-
-        List<Employee> tempList = new ArrayList<>(List.copyOf(employeeRepository.getAllEmployees()));
-        for (int i = 0; i < employeeRepository.getAllEmployees().size(); i++) {
-            if (employeeRepository.getAllEmployees().get(i).getId() == (id)) {
-                tempList.set(i, new Employee(id, employee.getName(), employee.getSalary()));
-            }
-        }
-        employeeRepository.addEmployeeList(tempList);
+        employeeRepository.save(employeeDTO.toEmployee());
     }
 
     @Override
     @SneakyThrows
-    public Employee getEmployeeById(int id) {
-        if (!employeeRepository.isEmployeeExist(id)) {
+    public EmployeeDTO getEmployeeById(int id) {
+        if (!employeeRepository.existsById(id)) {
             throw new Exception("Неверные данные");
         }
-        Employee tempEmploye = null;
-        for (Employee employee : employeeRepository.getAllEmployees()) {
-            if (employee.getId() == (id)) {
-                tempEmploye = employee;
-            }
-        }
-        return tempEmploye;
+        return EmployeeDTO.fromEmployee(employeeRepository.findById(id).get());
     }
 
     @Override
     @SneakyThrows
     public void deleteEmployee(int id) {
-        if (!employeeRepository.isEmployeeExist(id)) {
+        if (!employeeRepository.existsById(id)) {
             throw new Exception("Неверные данные");
         }
-        List<Employee> tempList = new ArrayList<>(List.copyOf(employeeRepository.getAllEmployees()));
-        for (int i = 0; i < employeeRepository.getAllEmployees().size(); i++) {
-            if (employeeRepository.getAllEmployees().get(i).getId() == (id)) {
-                tempList.remove(i);
-            }
-        }
-        employeeRepository.addEmployeeList(tempList);
+        employeeRepository.deleteById(id);
     }
 
     @Override
-    public List<Employee> getAllEmployeesSalaryHigherThanSalary(Integer salary) {
-        List<Employee> tempList = new ArrayList<>();
-        for (Employee employee : employeeRepository.getAllEmployees()) {
-            if (employee.getSalary() > salary) {
-                tempList.add(employee);
-            }
+    public List<EmployeeDTO> getAllEmployeesSalaryHigherThanSalary(Integer compareSalary) {
+        List<EmployeeDTO> temp = new ArrayList<>();
+        for (Employee e :
+                employeeRepository.findBySalaryGreaterThan(compareSalary)) {
+            temp.add(EmployeeDTO.fromEmployee(e));
         }
-        return tempList;
+        return temp;
     }
 
+    @Override
+    public List<EmployeeFullInfo> getEmployeeWithHighestSalary() {
+        return employeeRepository.findEmployeeWithHighestSalary().stream().map(EmployeeFullInfo::fromEmployee).toList();
+    }
+
+    @Override
+    public List<EmployeeFullInfo> getEmployeeOnPosition(String position) {
+        if (position == null){
+            List<EmployeeFullInfo> temp = new ArrayList<>();
+            for (Employee e : employeeRepository.findAll()) {
+                temp.add(EmployeeFullInfo.fromEmployee(e));
+            }
+            return temp;
+        }else return employeeRepository.findEmployeesByPosition(position);
+    }
+
+    @Override
+    @SneakyThrows
+    public List<EmployeeFullInfo> getEmployeeFullInfoByID(Integer id) {
+        Optional<Employee> temp = employeeRepository.findById(id);
+        if (temp.isEmpty()) {
+            throw new Exception("Неверные данные");
+        }
+        return temp.stream().map(EmployeeFullInfo::fromEmployee).toList();
+    }
+
+    @Override
+    public List<EmployeeFullInfo> getPageEmployee(Integer page) {
+        Pageable employeeOfConcretePage = PageRequest.of(Objects.requireNonNullElse(page, 0), 10);
+        Page<Employee> pageF = employeeRepository.findAll(employeeOfConcretePage);
+        return pageF.stream().map(EmployeeFullInfo::fromEmployee)
+                .toList();
+    }
 
 }
