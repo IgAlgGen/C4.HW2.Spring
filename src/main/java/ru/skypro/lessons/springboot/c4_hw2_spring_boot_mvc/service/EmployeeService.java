@@ -25,5 +25,5 @@ public interface EmployeeService {
 
     List<EmployeeFullInfo> getEmployeeFullInfoByID(Integer id);
 
-    List<EmployeeFullInfo> getPageEmployee(int page);
+    List<EmployeeFullInfo> getPageEmployee(Integer page);
 }

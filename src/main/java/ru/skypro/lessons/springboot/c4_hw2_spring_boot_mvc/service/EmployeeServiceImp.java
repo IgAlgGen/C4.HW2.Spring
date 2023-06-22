@@ -87,21 +87,28 @@ public class EmployeeServiceImp implements EmployeeService {
 
     @Override
     public List<EmployeeFullInfo> getEmployeeOnPosition(String position) {
-        return employeeRepository.findEmployeesByPosition(position);
+        if (position == null){
+            List<EmployeeFullInfo> temp = new ArrayList<>();
+            for (Employee e : employeeRepository.findAll()) {
+                temp.add(EmployeeFullInfo.fromEmployee(e));
+            }
+            return temp;
+        }else return employeeRepository.findEmployeesByPosition(position);
     }
 
     @Override
     @SneakyThrows
     public List<EmployeeFullInfo> getEmployeeFullInfoByID(Integer id) {
-        if (!employeeRepository.existsById(id)) {
+        Optional<Employee> temp = employeeRepository.findById(id);
+        if (temp.isEmpty()) {
             throw new Exception("Неверные данные");
         }
-        return employeeRepository.findById(id).stream().map(EmployeeFullInfo::fromEmployee).toList();
+        return temp.stream().map(EmployeeFullInfo::fromEmployee).toList();
     }
 
     @Override
-    public List<EmployeeFullInfo> getPageEmployee(int page) {
-        Pageable employeeOfConcretePage = PageRequest.of(page, 10);
+    public List<EmployeeFullInfo> getPageEmployee(Integer page) {
+        Pageable employeeOfConcretePage = PageRequest.of(Objects.requireNonNullElse(page, 0), 10);
         Page<Employee> pageF = employeeRepository.findAll(employeeOfConcretePage);
         return pageF.stream().map(EmployeeFullInfo::fromEmployee)
                 .toList();

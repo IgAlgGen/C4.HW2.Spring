@@ -27,7 +27,7 @@ public class EmployeeController {
     }
 
     //Добавлять нового сотрудника;
-    @PostMapping("/add")
+    @PostMapping("/addEmployee")
     public void addNewEmployee(@RequestBody EmployeeDTO employeeDTO) {
         employeeService.addEmployee(employeeDTO);
     }
@@ -76,7 +76,7 @@ public class EmployeeController {
 //    position
 //    и возвращать информацию о всех сотрудниках фирмы, указанной в параметре должности. Если параметр не указан, то возвращать необходимо всех сотрудников.
     @GetMapping(value = "/")
-    public List<EmployeeFullInfo> employeeOnPosition(@RequestParam("position") String position) {
+    public List<EmployeeFullInfo> employeeOnPosition(@RequestParam(required = false) String position) {
         return employeeService.getEmployeeOnPosition(position);
     }
 
@@ -96,7 +96,7 @@ public class EmployeeController {
     //Он должен возвращать информацию о сотрудниках, основываясь на номере страницы. Если страница не указана, то возвращается первая страница.
     //Номера страниц начинаются с 0. Лимит на количество сотрудников на странице — 10 человек.
     @GetMapping("page")
-    public List<EmployeeFullInfo> employeeList(@RequestParam("page") int page) {
+    public List<EmployeeFullInfo> employeeList(@RequestParam(required = false) Integer page) {
         return employeeService.getPageEmployee(page);
     }
 
