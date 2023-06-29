@@ -1,13 +1,16 @@
 package ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.controller;
 
 
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.DTO.EmployeeDTO;
 import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.DTO.EmployeeFullInfo;
 import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.pojo.Employee;
 import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.service.EmployeeService;
 
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -27,7 +30,7 @@ public class EmployeeController {
     }
 
     //Добавлять нового сотрудника;
-    @PostMapping("/addEmployee")
+    @PostMapping("/")
     public void addNewEmployee(@RequestBody EmployeeDTO employeeDTO) {
         employeeService.addEmployee(employeeDTO);
     }
@@ -56,11 +59,6 @@ public class EmployeeController {
         return employeeService.getAllEmployeesSalaryHigherThanSalary(compareSalary);
     }
 
-
-
-
-
-
     //GET-запрос
     //localhost:8080/employee/withHighestSalary
     //Он должен возвращать информацию о сотрудниках с самой высокой зарплатой в фирме;
@@ -80,9 +78,6 @@ public class EmployeeController {
         return employeeService.getEmployeeOnPosition(position);
     }
 
-
-
-
     //GET-запрос
     //localhost:8080/employee/{id}/fullInfo
     // Он должен возвращать полную информацию о сотруднике (имя, зарплата, название должности) с переданным в пути запроса идентификатором.
@@ -99,6 +94,12 @@ public class EmployeeController {
     public List<EmployeeFullInfo> employeeList(@RequestParam(required = false) Integer page) {
         return employeeService.getPageEmployee(page);
     }
+
+    @PutMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public void uploadAndSaveEmployee(@RequestParam("file") MultipartFile file) {
+        employeeService.saveEmployee(file);
+    }
+
 
 
 }

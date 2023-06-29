@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.io.IOException;
+
 @RestControllerAdvice
 public class EmployeeExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler
@@ -13,6 +15,12 @@ public class EmployeeExceptionHandler extends ResponseEntityExceptionHandler {
         // Возвращает статус 400 при возникновении Exception.
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler (JsonException.class)
+    public ResponseEntity<?> employeeNotFoundException(IOException ioException) {
+        // Возвращает статус 500 при возникновении Exception.
+        return new ResponseEntity<>(ioException.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 
 
 }

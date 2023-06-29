@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.DTO.ReportDTO;
 import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.pojo.Employee;
 import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.DTO.EmployeeFullInfo;
 
@@ -24,6 +25,9 @@ public interface EmployeeRepository extends CrudRepository <Employee, Integer>  
     List<EmployeeFullInfo> findEmployeesByPosition(String position);
 
     Page<Employee> findAll(Pageable employeeOfConcretePage);
+
+    @Query(value = "SELECT new ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.DTO.ReportDTO(e.position.positionName, COUNT(e.id), MAX(e.salary), MIN(e.salary), AVG(e.salary)) FROM Employee e GROUP BY e.position.positionName")
+    List<ReportDTO> buildReports();
 
 }
 

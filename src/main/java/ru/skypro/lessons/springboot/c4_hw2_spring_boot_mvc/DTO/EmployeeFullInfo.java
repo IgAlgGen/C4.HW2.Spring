@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.pojo.Employee;
+import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.pojo.Position;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,4 +22,12 @@ public class EmployeeFullInfo {
 
         return employeeFullInfo;
     }
+    public Employee toEmployee() {
+        Employee employee = new Employee();
+        employee.setName(this.getName());
+        employee.setSalary(this.getSalary());
+        employee.setPosition(new Position());
+        return employee;
+    }
+
 }
