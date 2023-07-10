@@ -15,13 +15,12 @@ import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.DTO.EmployeeDTO;
 import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.DTO.EmployeeFullInfo;
 import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.DTO.ReportDTO;
 import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.exceptionHandler.JsonException;
-import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.pojo.Employee;
-import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.pojo.Report;
+import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.entitys.Employee;
+import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.entitys.Report;
 import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.repository.EmployeeRepository;
 import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.repository.ReportRepositoriy;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;

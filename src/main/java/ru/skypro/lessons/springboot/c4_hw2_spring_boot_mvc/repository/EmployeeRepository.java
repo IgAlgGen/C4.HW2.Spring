@@ -5,7 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.DTO.ReportDTO;
-import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.pojo.Employee;
+import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.entitys.Employee;
 import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.DTO.EmployeeFullInfo;
 
 import java.util.List;

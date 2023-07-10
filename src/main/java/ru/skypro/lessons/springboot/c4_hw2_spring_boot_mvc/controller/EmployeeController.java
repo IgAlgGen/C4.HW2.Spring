@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.DTO.EmployeeDTO;
 import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.DTO.EmployeeFullInfo;
-import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.pojo.Employee;
 import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.service.EmployeeService;
 
 
@@ -29,28 +28,10 @@ public class EmployeeController {
         return employeeService.getAllEmployees();
     }
 
-    //Добавлять нового сотрудника;
-    @PostMapping("/")
-    public void addNewEmployee(@RequestBody EmployeeDTO employeeDTO) {
-        employeeService.addEmployee(employeeDTO);
-    }
-
-    //Редактировать сотрудника с указанным id
-    @PutMapping("/{id}")
-    public void updateEmployee(@PathVariable("id") int id, @RequestBody EmployeeDTO employeeDTO) {
-        employeeService.updateEmployee(id, employeeDTO);
-    }
-
     //Получить информацию о сотруднике с переданным id
     @GetMapping("/{id}")
     public EmployeeDTO getEmployeeById(@PathVariable("id") Integer id) {
         return employeeService.getEmployeeById(id);
-    }
-
-    //Удалить сотрудника с переданным id
-    @DeleteMapping("/{id}")
-    public void deleteEmployee(@PathVariable("id") Integer id) {
-        employeeService.deleteEmployee(id);
     }
 
     //Он должен возвращать всех сотрудников, зарплата которых выше переданного параметра salary
@@ -94,13 +75,6 @@ public class EmployeeController {
     public List<EmployeeFullInfo> employeeList(@RequestParam(required = false) Integer page) {
         return employeeService.getPageEmployee(page);
     }
-
-    @PutMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void uploadAndSaveEmployee(@RequestParam("file") MultipartFile file) {
-        employeeService.saveEmployee(file);
-    }
-
-
 
 }
 

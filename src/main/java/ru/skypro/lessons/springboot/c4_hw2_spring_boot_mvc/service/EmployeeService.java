@@ -4,9 +4,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.DTO.EmployeeDTO;
 import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.DTO.EmployeeFullInfo;
-import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.pojo.Employee;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface EmployeeService {

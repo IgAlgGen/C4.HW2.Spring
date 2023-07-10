@@ -3,8 +3,8 @@ package ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.DTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.pojo.Employee;
-import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.pojo.Position;
+import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.entitys.Employee;
+import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.entitys.Position;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,7 +19,6 @@ public class EmployeeFullInfo {
         employeeFullInfo.setName(employee.getName());
         employeeFullInfo.setSalary(employee.getSalary());
         employeeFullInfo.setPositionName(employee.getPosition().getPositionName());
-
         return employeeFullInfo;
     }
     public Employee toEmployee() {

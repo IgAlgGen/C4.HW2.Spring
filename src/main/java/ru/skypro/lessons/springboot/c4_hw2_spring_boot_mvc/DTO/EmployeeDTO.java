@@ -2,7 +2,7 @@ package ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.DTO;
 
 
 import lombok.*;
-import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.pojo.Employee;
+import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.entitys.Employee;
 
 @AllArgsConstructor
 @NoArgsConstructor
