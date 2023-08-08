@@ -22,9 +22,21 @@ databaseChangeLog:
                   type: int
                   constraints:
                     nullable: false
-              - addForeignKeyConstraint:
-                        baseColumnNames: position_id
-                        baseTableName: employeec4
-                        constraintName: fk_employee_position
-                        referencedColumnNames: position_id
-                        referencedTableName: positionc4
+              - column:
+                  name: position_id
+                  type: int
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+                  baseColumnNames: position_id
+                  baseTableCatalogName: skypro
+                  baseTableName: employeec4
+                  baseTableSchemaName: public
+                  constraintName: fk_employee_position_id
+                  referencedColumnNames: position_id
+                  referencedTableCatalogName: skypro
+                  referencedTableName: positionc4
+                  referencedTableSchemaName: public
+
+
+

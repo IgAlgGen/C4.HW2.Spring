@@ -19,13 +19,28 @@ databaseChangeLog:
                     nullable: false
                     unique: true
               - column:
+                  name: is_enabled
+                  type: boolean
+                  constraints:
+                    nullable: false
+              - column:
                   name: password
                   type: varchar
                   constraints:
                     nullable: false
-              - addForeignKeyConstraint:
-                        baseColumnNames: user_role
-                        baseTableName: usersc4
-                        constraintName: fk_users_user_role
-                        referencedColumnNames: role
-                        referencedTableName: user_rolec4
+              - column:
+                  name: role_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+                  baseColumnNames: role_id
+                  baseTableCatalogName: skypro
+                  baseTableName: usersc4
+                  baseTableSchemaName: public
+                  constraintName: fk_users_user_role
+                  referencedColumnNames: id
+                  referencedTableCatalogName: skypro
+                  referencedTableName: user_rolec4
+                  referencedTableSchemaName: public
+
