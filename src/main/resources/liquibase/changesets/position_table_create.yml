@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1 # идентификатор набора изменений
+      author: developer # имя разработчика, который добавил набор изменений
+      changes: # список изменений в этом наборе
+        - createTable: # команда liquibase — создает таблицу
+            tableName: positionc4 # название таблицы
+            columns: # колонки к данной таблице
+              - column: # колонка
+                  name: position_id # название колонки
+                  type: int # тип
+                  autoIncrement: true # признак автоинкремента колонки
+                  constraints: # ограничения колонки
+                    primaryKey: true
+              - column:
+                  name: position_name
+                  type: varchar
+                  constraints:
+                    nullable: false

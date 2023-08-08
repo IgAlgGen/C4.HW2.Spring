@@ -25,7 +25,8 @@ public class Main {
 
 //получить объект из строки JSON с помощью метода
 //readValue
-      String json1 = "{\"name\":\"Василий\",\"salary\":125000}\n";
+      //String json1 = "{\"name\":\"Василий\",\"salary\":125000}\n";
+      String json1 = json;
       EmployeeDTO employeeDTO1 = null;
       try {
           employeeDTO1 = objectMapper.readValue(json1, EmployeeDTO.class);
@@ -34,4 +35,5 @@ public class Main {
       }
       System.out.println(employeeDTO1);
    }
+   // TODO test example
 }

@@ -12,7 +12,7 @@ import java.util.Calendar;
 
 
 @Entity
-@Table(name = "reportc4")
+@Table(name = "reportc4t")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
