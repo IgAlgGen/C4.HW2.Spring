@@ -48,21 +48,37 @@ public class EmployeeServiceImpTests {
         verify(employeeRepository, times(1)).save(any(Employee.class)); // Проверяем, что метод save был вызван для сохранения сотрудника
     }
 
+    @Test(expected = Exception.class)
+    public void testAddEmployee_ExistingEmployee() {
+        when(employeeRepository.existsById(anyInt())).thenReturn(true);// Устанавливаем, что метод existsById вернет true, т.е. сотрудник с таким id уже есть в базе
+        employeeService.addEmployee(EMPLOYEE_DTO_1); // Вызываем метод, который тестируем (должен выбросить исключение)
+    }
+
     @Test
     public void testUpdateEmployee_ExistingEmployee() {
         when(employeeRepository.existsById(anyInt())).thenReturn(true); // Устанавливаем, что метод existsById вернет true, т.е. сотрудник с таким id уже есть в базе
         employeeService.updateEmployee(1, EMPLOYEE_DTO_2); // Вызываем метод, который тестируем
         verify(employeeRepository, times(1)).save(any(Employee.class)); // Проверяем, что метод save был вызван для обновления сотрудника
     }
+    @Test(expected = Exception.class)
+    public void testUpdateEmployee_NonExistingEmployee() {
+        when(employeeRepository.existsById(anyInt())).thenReturn(false);// Устанавливаем, что метод existsById вернет false, т.е. сотрудника с таким id еще нет в базе
+        employeeService.updateEmployee(anyInt(), EMPLOYEE_DTO_2);// Вызываем метод, который тестируем (должен выбросить исключение)
+    }
 
     @Test
     public void testGetEmployeeById_ExistingEmployee() {
         when(employeeRepository.existsById(anyInt())).thenReturn(true); // Устанавливаем, что метод existsById вернет true, т.е. сотрудник с таким id уже есть в базе
         when(employeeRepository.findById(anyInt())).thenReturn(Optional.of(EMPLOYEE_1)); // Проверяем, что метод findByID возвращает employee из БД
-        employeeService.getEmployeeById(1); // Вызываем метод, который тестируем
+        employeeService.getEmployeeById(anyInt()); // Вызываем метод, который тестируем
         verify(employeeRepository, times(1)).findById(anyInt()); // Проверяем, что метод findById был вызван для получения сотрудника по id
         assertEquals(EMPLOYEE_DTO_1, employeeService.getEmployeeById(anyInt())); // Проверяем, что метод getEmployeeById возвращает сотрудника с таким id
+    }
 
+    @Test(expected = Exception.class)
+    public void testGetEmployeeById_NonExistingEmployee() {
+        when(employeeRepository.existsById(anyInt())).thenReturn(false);// Устанавливаем, что метод existsById вернет false, т.е. сотрудника с таким id еще нет в базе
+        employeeService.getEmployeeById(anyInt()); // Вызываем метод, который тестируем (должен выбросить исключение)
     }
 
     @Test
@@ -70,6 +86,12 @@ public class EmployeeServiceImpTests {
         when(employeeRepository.existsById(anyInt())).thenReturn(true);// Устанавливаем, что метод existsById вернет true, т.е. сотрудник с таким id уже есть в базе
         employeeService.deleteEmployee(anyInt()); // Вызываем метод, который тестируем
         verify(employeeRepository, times(1)).deleteById(anyInt()); // Проверяем, что метод deleteById был вызван для удаления сотрудника по id
+    }
+
+    @Test(expected = Exception.class)
+    public void testDeleteEmployee_NonExistingEmployee() {
+        when(employeeRepository.existsById(anyInt())).thenReturn(false);// Устанавливаем, что метод existsById вернет false, т.е. сотрудника с таким id еще нет в базе
+        employeeService.deleteEmployee(anyInt());// Вызываем метод, который тестируем (должен выбросить исключение)
     }
 
     @Test
@@ -85,21 +107,5 @@ public class EmployeeServiceImpTests {
         List<EmployeeDTO> employeesDTO = employeeService.getAllEmployees(); // Вызываем метод, который тестируем (должен выбросить исключение)
         assertEquals(0, employeesDTO.size()); // Проверяем, что возвращаемый список пуст
     }
-
-
-    @Test(expected = Exception.class)
-    public void testAddEmployee_NonExistingEmployee() {
-        when(employeeRepository.existsById(anyInt())).thenReturn(true);// Устанавливаем, что метод existsById вернет true, т.е. сотрудник с таким id уже есть в базе
-        employeeService.addEmployee(EMPLOYEE_DTO_1); // Вызываем метод, который тестируем (должен выбросить исключение)
-    }
-
-    @Test(expected = Exception.class)
-    public void testUpdateGetDeleteEmployee_NonExistingEmployee() {
-        when(employeeRepository.existsById(anyInt())).thenReturn(false);// Устанавливаем, что метод existsById вернет false, т.е. сотрудника с таким id еще нет в базе
-        employeeService.updateEmployee(1, EMPLOYEE_DTO_2);// Вызываем метод, который тестируем (должен выбросить исключение)
-        employeeService.getEmployeeById(1); // Вызываем метод, который тестируем (должен выбросить исключение)
-        employeeService.deleteEmployee(1);// Вызываем метод, который тестируем (должен выбросить исключение)
-    }
-
 
 }
