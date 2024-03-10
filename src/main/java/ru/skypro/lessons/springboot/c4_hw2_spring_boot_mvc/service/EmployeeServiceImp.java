@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ByteArrayResource;
@@ -18,9 +17,9 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.DTO.EmployeeDTO;
 import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.DTO.EmployeeFullInfo;
 import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.DTO.ReportDTO;
-import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.exceptionHandler.JsonException;
 import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.entitys.Employee;
 import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.entitys.Report;
+import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.exceptionHandler.JsonException;
 import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.repository.EmployeeRepository;
 import ru.skypro.lessons.springboot.c4_hw2_spring_boot_mvc.repository.ReportRepositoriy;
 
@@ -160,9 +159,9 @@ public class EmployeeServiceImp implements EmployeeService {
     public void saveEmployee(MultipartFile file) {
         logger.info("Was invoked method saveEmployee with parameter {}", file.getOriginalFilename());
         try {
-            List<EmployeeDTO> temp = objectMapper.readValue(file.getBytes(), new TypeReference<List<EmployeeDTO>>() {});
-            for (EmployeeDTO e :
-                    temp) {
+            List<EmployeeDTO> temp = objectMapper.readValue(file.getBytes(), new TypeReference<List<EmployeeDTO>>() {
+            });
+            for (EmployeeDTO e : temp) {
                 addEmployee(e);
             }
         } catch (IOException e) {
