@@ -107,8 +107,7 @@ public class EmployeeServiceImp implements EmployeeService {
     public List<EmployeeDTO> getAllEmployeesSalaryHigherThanSalary(Integer compareSalary) {
         logger.info("Was invoked method getAllEmployeesSalaryHigherThanSalary with parameter {}", compareSalary);
         List<EmployeeDTO> temp = new ArrayList<>();
-        for (Employee e :
-                employeeRepository.findBySalaryGreaterThan(compareSalary)) {
+        for (Employee e : employeeRepository.findBySalaryGreaterThan(compareSalary)) {
             temp.add(EmployeeDTO.fromEmployee(e));
         }
         return temp;
@@ -117,7 +116,10 @@ public class EmployeeServiceImp implements EmployeeService {
     @Override
     public List<EmployeeFullInfo> getEmployeeWithHighestSalary() {
         logger.info("Was invoked method getEmployeeWithHighestSalary");
-        return employeeRepository.findEmployeeWithHighestSalary().stream().map(EmployeeFullInfo::fromEmployee).toList();
+        return employeeRepository.findEmployeeWithHighestSalary()
+                .stream()
+                .map(EmployeeFullInfo::fromEmployee)
+                .toList();
     }
 
     @Override
@@ -143,7 +145,9 @@ public class EmployeeServiceImp implements EmployeeService {
             logger.error("There is no employee with id = " + id, new Exception("Неверные данные"));
             throw new Exception("Неверные данные");
         }
-        return temp.stream().map(EmployeeFullInfo::fromEmployee).toList();
+        return temp.stream()
+                .map(EmployeeFullInfo::fromEmployee)
+                .toList();
     }
 
     @Override
@@ -159,8 +163,7 @@ public class EmployeeServiceImp implements EmployeeService {
     public void saveEmployee(MultipartFile file) {
         logger.info("Was invoked method saveEmployee with parameter {}", file.getOriginalFilename());
         try {
-            List<EmployeeDTO> temp = objectMapper.readValue(file.getBytes(), new TypeReference<List<EmployeeDTO>>() {
-            });
+            List<EmployeeDTO> temp = objectMapper.readValue(file.getBytes(), new TypeReference<List<EmployeeDTO>>() {});
             for (EmployeeDTO e : temp) {
                 addEmployee(e);
             }
