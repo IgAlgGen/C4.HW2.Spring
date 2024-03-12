@@ -41,7 +41,7 @@ public class EmployeeServiceImpTests {
     @Mock
     private EmployeeRepository employeeRepository;
     @Mock
-    private ObjectMapper objectMapper;
+    private ObjectMapper objectMapper = new ObjectMapper();
     @Mock
     private ReportRepositoriy reportRepositoriy;
 
@@ -49,7 +49,6 @@ public class EmployeeServiceImpTests {
     @Before
     public void setUp() {
         employeeRepository = mock(EmployeeRepository.class); // Создание mock объекта employeeRepository
-        objectMapper = mock(ObjectMapper.class); // Создание mock объекта objectMapper
         reportRepositoriy = mock(ReportRepositoriy.class); // Создание mock объекта reportRepositoriy
         employeeService = new EmployeeServiceImp(employeeRepository, objectMapper, reportRepositoriy); // Инициализация сервиса с mock объектами
 
@@ -182,8 +181,8 @@ public class EmployeeServiceImpTests {
     }
 
 
-
-    @Disabled ("Не понимаю, почему objectMapper, в saveEmployee, передает null")
+    @Disabled("Не понимаю, почему objectMapper, в saveEmployee, передает null")
+    @Test
     @SneakyThrows
     public void saveEmployee_ValidFile_SaveEmployeeToDB() {
         // Тестовые данные
@@ -195,13 +194,12 @@ public class EmployeeServiceImpTests {
         ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
         MockMultipartFile file = new MockMultipartFile("file", "employees.json", "application/json", inputStream);
         employeeService.saveEmployee(file);
-
-        verify(employeeService, times(3)).addEmployee(any(EmployeeDTO.class));
+        verify(employeeRepository, times(3)).save(any(Employee.class));
     }
 
     @SneakyThrows
-
-    @Disabled ("Тоже самое что и в предидущем тесте")
+    @Test
+    @Disabled("Тоже самое что и в предидущем тесте")
     public void saveEmployee_InvalidFile_ThrowsJsonException() {
         // Tестовые данные
         ByteArrayInputStream inputStream = new ByteArrayInputStream("invalid json data".getBytes());
@@ -212,8 +210,9 @@ public class EmployeeServiceImpTests {
     }
 
 
+    @Test
     @Disabled("Да что не так с этим objectMapper в вызываемом методе, принимает объект и все обнуляет")
-    public void buildReport_getStringReport(){
+    public void buildReport_getStringReport() {
         //тестовые данные
         ReportDTO reportDTO_1 = new ReportDTO();
         ReportDTO reportDTO_2 = new ReportDTO();
@@ -228,7 +227,7 @@ public class EmployeeServiceImpTests {
 
     @Test
     public void downloadReport_DDDDD() throws IOException {
-        Report report = new Report(1,"sfsfsdfsdfsfd", Calendar.getInstance());
+        Report report = new Report(1, "sfsfsdfsdfsfd", Calendar.getInstance());
         when(reportRepositoriy.findById(anyInt())).thenReturn(Optional.of(report));
         Resource result = employeeService.downloadReport(anyInt());
         assertEquals(result.getContentAsString(StandardCharsets.UTF_8), report.toString());
