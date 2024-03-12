@@ -22,4 +22,5 @@ public class EmployeeConstants {
     public static final List<EmployeeDTO> EMPLOYEES_DTO_LIST = List.of(EMPLOYEE_DTO_1, EMPLOYEE_DTO_2, EMPLOYEE_DTO_3);
     public static final List<Employee> EMPLOYEES_LIST = List.of(EMPLOYEE_1, EMPLOYEE_2, EMPLOYEE_3);
     public static final  List<EmployeeFullInfo> EMPLOYEES_FULL_INFO_LIST = List.of(EMPLOYEE_FULL_INFO_1, EMPLOYEE_FULL_INFO_2, EMPLOYEE_FULL_INFO_3);
+
 }
